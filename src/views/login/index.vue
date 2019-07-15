@@ -22,7 +22,7 @@
           </el-checkbox-group>
         </el-form-item>
         <el-form-item>
-          <el-button style="width:100%" type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
+          <el-button style="width:100%" type="primary" @click="submitForm('ruleForm')">立即登陆</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -34,24 +34,7 @@ export default {
     // 自定义校验函数
     const checkMobile = (rule, value, callback) => {
       if (/^1[3-9]\d{9}$/.test(value)) {
-        this.$http
-          .post(
-            'http://ttapi.research.itcast.cn/mp/v1_0/authorizations',
-            this.ruleForm
-          )
-          .then(res => {
-            if (res.status === 201) {
-              this.$router.push('/')
-            } else if (res.status === 400) {
-              this.$message.error('手机号或验证码输入有误，请重新输入')
-            } else if (res.status === 403) {
-              this.$message.error('用户非实名认证用户，无权限登录')
-            } else if (res.status === 507) {
-              this.$message.error('服务器数据库异常')
-            }
-          }).catch(() => {
-            this.$message.error('手机号或验证码输入有误，请重新输入')
-          })
+        callback()
       } else {
         callback(new Error('请输入正确格式手机号'))
       }
@@ -86,7 +69,26 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          alert('submit!')
+          this.$http
+            .post(
+              'http://ttapi.research.itcast.cn/mp/v1_0/authorizations',
+              this.ruleForm
+            )
+            .then(res => {
+              if (res.status === 201) {
+                // 存储json对象数据
+                window.sessionStorage.setItem('bhhl', JSON.stringify(res.data.data))
+                this.$router.push('/')
+              } else if (res.status === 400) {
+                this.$message.error('手机号或验证码输入有误，请重新输入')
+              } else if (res.status === 403) {
+                this.$message.error('用户非实名认证用户，无权限登录')
+              } else if (res.status === 507) {
+                this.$message.error('服务器数据库异常')
+              }
+            }).catch(() => {
+              this.$message.error('手机号或验证码输入有误，请重新输入')
+            })
         } else {
           console.log('error submit!!')
           return false

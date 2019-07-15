@@ -32,5 +32,13 @@ const router = new VueRouter({
   }
   ]
 })
+
+// 前置守卫
+router.beforeEach((to, from, next) => {
+  if (to.path === '/login') return next()
+  const user = window.sessionStorage.getItem('bhhl')
+  if (user) return next()
+  next('/login')
+})
 // 导出router
 export default router

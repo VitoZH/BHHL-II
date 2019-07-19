@@ -67,31 +67,42 @@ export default {
   },
   methods: {
     submitForm (formName) {
-      this.$refs[formName].validate(valid => {
+      // this.$refs[formName].validate(valid => {
+      //   if (valid) {
+      //     this.$http
+      //       .post(
+      //         '/authorizations',
+      //         this.ruleForm
+      //       )
+      //       .then(res => {
+      //         if (res.status === 201) {
+      //           // 存储json对象数据
+      //           window.sessionStorage.setItem('bhhl', JSON.stringify(res.data.data))
+      //           this.$router.push('/')
+      //         } else if (res.status === 400) {
+      //           this.$message.error('手机号或验证码输入有误，请重新输入')
+      //         } else if (res.status === 403) {
+      //           this.$message.error('用户非实名认证用户，无权限登录')
+      //         } else if (res.status === 507) {
+      //           this.$message.error('服务器数据库异常')
+      //         }
+      //       }).catch(() => {
+      //         this.$message.error('手机号或验证码输入有误，请重新输入')
+      //       })
+      //   } else {
+      //     console.log('error submit!!')
+      //     return false
+      //   }
+      // })
+      this.$refs[formName].validate(async valid => {
         if (valid) {
-          this.$http
-            .post(
-              '/authorizations',
-              this.ruleForm
-            )
-            .then(res => {
-              if (res.status === 201) {
-                // 存储json对象数据
-                window.sessionStorage.setItem('bhhl', JSON.stringify(res.data.data))
-                this.$router.push('/')
-              } else if (res.status === 400) {
-                this.$message.error('手机号或验证码输入有误，请重新输入')
-              } else if (res.status === 403) {
-                this.$message.error('用户非实名认证用户，无权限登录')
-              } else if (res.status === 507) {
-                this.$message.error('服务器数据库异常')
-              }
-            }).catch(() => {
-              this.$message.error('手机号或验证码输入有误，请重新输入')
-            })
-        } else {
-          console.log('error submit!!')
-          return false
+          try {
+            const res = await this.$http.post('/authorizations', this.ruleForm)
+            window.sessionStorage.setItem('bhhl', JSON.stringify(res.data.data))
+            this.$router.push('/')
+          } catch (err) {
+            this.$message.error('手机号或验证码输入有误，请重新输入')
+          }
         }
       })
     }

@@ -49,15 +49,15 @@
         <span class="txt">江苏传智播客教育有限公司</span>
         <el-dropdown style="float:right">
           <span class="el-dropdown-link">
-            <img src="../../assets/images/avatar.jpg" alt />
-            <b>黑马小妹</b>
+            <img :src="avatar" alt />
+            <b>{{name}}</b>
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>
+            <el-dropdown-item @click.native="setting()">
               <i class="el-icon-s-custom"></i>个人设置
             </el-dropdown-item>
-            <el-dropdown-item>
+            <el-dropdown-item @click.native="logout()">
               <i class="el-icon-switch-button"></i>退出登录
             </el-dropdown-item>
           </el-dropdown-menu>
@@ -74,10 +74,27 @@
 export default {
   data () {
     return {
-      isCollapse: false
+      isCollapse: false,
+      avatar: '',
+      name: ''
     }
   },
+  created () {
+    // 获取用户信息
+    const user = JSON.parse(window.sessionStorage.getItem('bhhl'))
+    this.avatar = user.photo
+    this.name = user.name
+  },
   methods: {
+    // 退出登录
+    logout () {
+      window.sessionStorage.removeItem('bhhl')
+      this.$router.push('/login')
+    },
+    // 跳转个人设置页
+    setting () {
+      this.$router.push('/setting')
+    },
     toggleMenu () {
       this.isCollapse = !this.isCollapse
     }

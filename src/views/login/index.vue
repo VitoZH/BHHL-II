@@ -71,7 +71,7 @@ export default {
         if (valid) {
           this.$http
             .post(
-              'http://ttapi.research.itcast.cn/mp/v1_0/authorizations',
+              '/authorizations',
               this.ruleForm
             )
             .then(res => {

@@ -19,6 +19,7 @@ export default {
     this.getChannelOptions()
   },
   methods: {
+    // 当选中数据变化时触发
     fn (value) {
       this.$emit('input', value)
     },

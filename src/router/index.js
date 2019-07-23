@@ -6,6 +6,7 @@ import Login from '@/views/login'
 import Home from '@/views/home'
 import NotFound from '@/views/404'
 import Welcome from '@/views/welcome'
+import Article from '@/views/article'
 Vue.use(VueRouter)
 // 实例化
 const router = new VueRouter({
@@ -23,6 +24,10 @@ const router = new VueRouter({
       name: 'welcome',
       path: '/',
       component: Welcome
+    }, {
+      name: 'article',
+      path: '/article',
+      component: Article
     }]
   },
   // 404

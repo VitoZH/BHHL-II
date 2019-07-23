@@ -4,7 +4,7 @@
       <div class="logo" :class="{close:isCollapse}"></div>
       <el-menu
         router
-        default-active="/"
+        :default-active="$route.path"
         class="el-menu-vertical-demo"
         background-color="#002233"
         text-color="#fff"
